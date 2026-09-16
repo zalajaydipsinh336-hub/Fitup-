@@ -1,146 +1,574 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FitUp - Fitness App</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitUp - Fitness App</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
 
-    body {
-      background: #f4f7f6;
-      color: #222;
-    }
+body{
+  background:#f4f7f6;
+  color:#222;
+  min-height:100vh;
+}
 
-    header {
-      background: #111;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
+header{
+  background:#111;
+  color:white;
+  padding:20px;
+  text-align:center;
+}
 
-    header h1 {
-      font-size: 32px;
-    }
+header h1{
+  font-size:28px;
+}
 
-    header p {
-      margin-top: 6px;
-      color: #bbb;
-    }
+header p{
+  margin-top:5px;
+  color:#ccc;
+}
 
-    .container {
-      padding: 20px;
-      max-width: 700px;
-      margin: auto;
-    }
+.container{
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+}
 
-    .welcome {
-      background: white;
-      padding: 22px;
-      border-radius: 18px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
+.card{
+  background:white;
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:18px;
+  box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
 
-    .welcome h2 {
-      margin-bottom: 8px;
-    }
+.welcome{
+  text-align:center;
+  padding:45px 20px;
+}
 
-    .workouts {
-      display: grid;
-      gap: 15px;
-    }
+.logo{
+  width:85px;
+  height:85px;
+  background:#111;
+  color:white;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 20px;
+  font-size:30px;
+  font-weight:bold;
+}
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
+h2{
+  margin-bottom:12px;
+}
 
-    .card h3 {
-      margin-bottom: 8px;
-    }
+.subtitle{
+  color:#666;
+  line-height:1.5;
+  margin-bottom:25px;
+}
 
-    .card p {
-      color: #666;
-      margin-bottom: 15px;
-    }
+button{
+  width:100%;
+  border:none;
+  border-radius:12px;
+  padding:15px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:10px;
+  background:#111;
+  color:white;
+}
 
-    button {
-      background: #111;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 15px;
-    }
+button.secondary{
+  background:#e9eeee;
+  color:#222;
+}
 
-    button:active {
-      transform: scale(0.97);
-    }
+.option{
+  border:2px solid #ddd;
+  padding:15px;
+  border-radius:12px;
+  margin:10px 0;
+  cursor:pointer;
+  background:white;
+}
 
-    #message {
-      margin-top: 20px;
-      text-align: center;
-      font-weight: bold;
-    }
-  </style>
+.option.selected{
+  border-color:#111;
+  background:#eee;
+}
+
+.progress{
+  height:8px;
+  background:#ddd;
+  border-radius:10px;
+  overflow:hidden;
+  margin:15px 0 25px;
+}
+
+.progress-bar{
+  height:100%;
+  width:25%;
+  background:#111;
+  transition:.3s;
+}
+
+.hidden{
+  display:none;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.stat{
+  background:#f1f4f3;
+  padding:18px;
+  border-radius:14px;
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  font-size:25px;
+  margin-bottom:5px;
+}
+
+.exercise{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 0;
+  border-bottom:1px solid #ddd;
+}
+
+.exercise:last-child{
+  border-bottom:none;
+}
+
+.badge{
+  display:inline-block;
+  background:#111;
+  color:white;
+  padding:7px 12px;
+  border-radius:20px;
+  font-size:13px;
+}
+
+.level{
+  font-size:24px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+.success{
+  text-align:center;
+  padding:30px 15px;
+}
+
+.success .emoji{
+  font-size:55px;
+  margin-bottom:15px;
+}
+
+@media(max-width:400px){
+  .container{
+    padding:14px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>FitUp</h1>
-    <p>Your Fitness Journey Starts Here</p>
-  </header>
+<header>
+  <h1>FitUp</h1>
+  <p>Your personal fitness journey</p>
+</header>
 
-  <main class="container">
+<div class="container">
 
-    <section class="welcome">
-      <h2>Welcome to FitUp 💪</h2>
-      <p>Choose a workout and start your fitness journey.</p>
-    </section>
+<!-- WELCOME -->
+<section id="welcomeScreen" class="card welcome">
+  <div class="logo">FU</div>
+  <h2>Welcome to FitUp 💪</h2>
+  <p class="subtitle">
+    Let's personalize your fitness journey.
+    We'll use your experience and progress to recommend suitable workouts.
+  </p>
+  <button onclick="startSetup()">Get Started</button>
+</section>
 
-    <section class="workouts">
 
-      <div class="card">
-        <h3>🔥 Full Body</h3>
-        <p>Complete body workout for beginners.</p>
-        <button onclick="startWorkout('Full Body')">Start Workout</button>
+<!-- SETUP -->
+<section id="setupScreen" class="card hidden">
+
+  <div class="progress">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div id="step1">
+    <h2>What's your fitness level?</h2>
+    <p class="subtitle">Choose the option that best describes your current experience.</p>
+
+    <div class="option" onclick="selectOption('level','Beginner',this)">
+      🟢 Beginner
+    </div>
+
+    <div class="option" onclick="selectOption('level','Intermediate',this)">
+      🔵 Intermediate
+    </div>
+
+    <div class="option" onclick="selectOption('level','Advanced',this)">
+      🟣 Advanced
+    </div>
+
+    <div class="option" onclick="selectOption('level','Not sure',this)">
+      🤔 Not sure
+    </div>
+
+    <button onclick="nextStep(2)">Continue</button>
+  </div>
+
+
+  <!-- STEP 2 -->
+  <div id="step2" class="hidden">
+    <h2>What's your main goal?</h2>
+    <p class="subtitle">Choose what you want to focus on.</p>
+
+    <div class="option" onclick="selectOption('goal','Improve fitness',this)">
+      🏃 Improve fitness
+    </div>
+
+    <div class="option" onclick="selectOption('goal','Build strength',this)">
+      💪 Build strength
+    </div>
+
+    <div class="option" onclick="selectOption('goal','Build endurance',this)">
+      🔥 Build endurance
+    </div>
+
+    <div class="option" onclick="selectOption('goal','Stay active',this)">
+      ❤️ Stay active
+    </div>
+
+    <button onclick="nextStep(3)">Continue</button>
+  </div>
+
+
+  <!-- STEP 3 -->
+  <div id="step3" class="hidden">
+    <h2>How many push-ups can you comfortably do?</h2>
+    <p class="subtitle">Don't worry about the number. Choose honestly so FitUp can start at a suitable level.</p>
+
+    <div class="option" onclick="selectOption('pushups','0–5',this)">
+      0–5
+    </div>
+
+    <div class="option" onclick="selectOption('pushups','6–15',this)">
+      6–15
+    </div>
+
+    <div class="option" onclick="selectOption('pushups','16–30',this)">
+      16–30
+    </div>
+
+    <div class="option" onclick="selectOption('pushups','30+',this)">
+      30+
+    </div>
+
+    <button onclick="finishSetup()">Create My Plan</button>
+  </div>
+
+</section>
+
+
+<!-- HOME -->
+<section id="homeScreen" class="hidden">
+
+  <div class="card">
+    <p>Welcome back 👋</p>
+    <div class="level" id="homeLevel">Beginner</div>
+    <span class="badge">Your current level</span>
+  </div>
+
+  <div class="card">
+    <h2>Today's Workout 🔥</h2>
+    <p class="subtitle">A simple full-body session based on your current level.</p>
+
+    <div class="exercise">
+      <span>Push-ups</span>
+      <strong id="pushupTarget">5 reps</strong>
+    </div>
+
+    <div class="exercise">
+      <span>Bodyweight Squats</span>
+      <strong>10 reps</strong>
+    </div>
+
+    <div class="exercise">
+      <span>Plank</span>
+      <strong>20 sec</strong>
+    </div>
+
+    <button onclick="completeWorkout()">Complete Workout</button>
+  </div>
+
+
+  <div class="card">
+    <h2>Your Progress 📈</h2>
+
+    <div class="stat-grid">
+      <div class="stat">
+        <strong id="workouts">0</strong>
+        Workouts
       </div>
 
-      <div class="card">
-        <h3>💪 Chest Workout</h3>
-        <p>Simple exercises for your chest.</p>
-        <button onclick="startWorkout('Chest')">Start Workout</button>
+      <div class="stat">
+        <strong id="streak">0</strong>
+        Day Streak
       </div>
+    </div>
+  </div>
 
-      <div class="card">
-        <h3>🦵 Leg Workout</h3>
-        <p>Build strength with basic leg exercises.</p>
-        <button onclick="startWorkout('Legs')">Start Workout</button>
-      </div>
 
-    </section>
+  <div class="card">
+    <h2>🏆 Achievements</h2>
+    <p class="subtitle">Complete workouts consistently to unlock achievements.</p>
+    <span class="badge" id="achievement">Getting Started</span>
+  </div>
 
-    <div id="message"></div>
 
-  </main>
+  <div class="card">
+    <h2>⚙️ Profile</h2>
+    <p class="subtitle" id="profileInfo"></p>
+    <button class="secondary" onclick="resetProfile()">Reset Profile</button>
+  </div>
 
-  <script>
-    function startWorkout(name) {
-      document.getElementById("message").innerText =
-        name + " workout started! 💪";
-    }
-  </script>
+</section>
+
+
+<!-- LEVEL UP -->
+<section id="levelUpScreen" class="card success hidden">
+  <div class="emoji">🎉</div>
+  <h2>LEVEL UP!</h2>
+  <p class="subtitle" id="levelUpText"></p>
+  <button onclick="showHome()">Continue</button>
+</section>
+
+</div>
+
+
+<script>
+
+let user = JSON.parse(localStorage.getItem("fitupUser")) || null;
+
+let setupData = {
+  level:"",
+  goal:"",
+  pushups:""
+};
+
+let currentStep = 1;
+
+
+function startSetup(){
+  document.getElementById("welcomeScreen").classList.add("hidden");
+  document.getElementById("setupScreen").classList.remove("hidden");
+}
+
+
+function selectOption(type,value,element){
+
+  setupData[type] = value;
+
+  let parent = element.parentElement;
+  let options = parent.querySelectorAll(".option");
+
+  options.forEach(option=>{
+    option.classList.remove("selected");
+  });
+
+  element.classList.add("selected");
+}
+
+
+function nextStep(step){
+
+  if(step===2 && !setupData.level){
+    alert("Please select your fitness level.");
+    return;
+  }
+
+  if(step===3 && !setupData.goal){
+    alert("Please select your main goal.");
+    return;
+  }
+
+  document.getElementById("step1").classList.add("hidden");
+  document.getElementById("step2").classList.add("hidden");
+  document.getElementById("step3").classList.add("hidden");
+
+  document.getElementById("step"+step).classList.remove("hidden");
+
+  currentStep = step;
+
+  document.getElementById("progressBar").style.width =
+    (step*33.33)+"%";
+}
+
+
+function finishSetup(){
+
+  if(!setupData.pushups){
+    alert("Please select your push-up range.");
+    return;
+  }
+
+  user = {
+    level:setupData.level === "Not sure" ? "Beginner" : setupData.level,
+    goal:setupData.goal,
+    pushups:setupData.pushups,
+    workouts:0,
+    streak:0
+  };
+
+  localStorage.setItem("fitupUser",JSON.stringify(user));
+
+  showHome();
+}
+
+
+function showHome(){
+
+  document.getElementById("welcomeScreen").classList.add("hidden");
+  document.getElementById("setupScreen").classList.add("hidden");
+  document.getElementById("levelUpScreen").classList.add("hidden");
+  document.getElementById("homeScreen").classList.remove("hidden");
+
+  updateHome();
+}
+
+
+function updateHome(){
+
+  if(!user) return;
+
+  document.getElementById("homeLevel").textContent = user.level;
+  document.getElementById("workouts").textContent = user.workouts;
+  document.getElementById("streak").textContent = user.streak;
+
+  document.getElementById("profileInfo").textContent =
+    "Goal: "+user.goal+" • Push-ups: "+user.pushups;
+
+  let target = "5 reps";
+
+  if(user.level==="Intermediate") target="10 reps";
+  if(user.level==="Advanced") target="15 reps";
+  if(user.level==="Elite") target="20 reps";
+
+  document.getElementById("pushupTarget").textContent = target;
+
+  if(user.workouts >= 1){
+    document.getElementById("achievement").textContent =
+      "🏅 First Workout";
+  }
+
+  if(user.workouts >= 5){
+    document.getElementById("achievement").textContent =
+      "🔥 5 Workouts";
+  }
+
+  if(user.workouts >= 10){
+    document.getElementById("achievement").textContent =
+      "🏆 10 Workouts";
+  }
+}
+
+
+function completeWorkout(){
+
+  user.workouts++;
+  user.streak++;
+
+  let oldLevel = user.level;
+
+  /*
+    Basic progression for V1.
+    Later we will replace this with a proper
+    performance-based progression system.
+  */
+
+  if(user.workouts >= 10 && user.level==="Beginner"){
+    user.level="Intermediate";
+  }
+  else if(user.workouts >= 25 && user.level==="Intermediate"){
+    user.level="Advanced";
+  }
+  else if(user.workouts >= 50 && user.level==="Advanced"){
+    user.level="Elite";
+  }
+
+  localStorage.setItem("fitupUser",JSON.stringify(user));
+
+  if(oldLevel !== user.level){
+
+    document.getElementById("homeScreen").classList.add("hidden");
+    document.getElementById("levelUpScreen").classList.remove("hidden");
+
+    document.getElementById("levelUpText").textContent =
+      "Congratulations! You've reached "+user.level+
+      " Level. Your hard work is paying off! Keep going! 💪🔥";
+
+  }else{
+    alert("Workout completed! 🔥 Great job!");
+    updateHome();
+  }
+}
+
+
+function resetProfile(){
+
+  if(confirm("Are you sure you want to reset your FitUp profile?")){
+
+    localStorage.removeItem("fitupUser");
+
+    user=null;
+
+    location.reload();
+  }
+}
+
+
+/* Open the correct screen when the site loads */
+
+window.onload=function(){
+
+  if(user){
+    showHome();
+  }
+  else{
+    document.getElementById("welcomeScreen").classList.remove("hidden");
+  }
+
+};
+
+</script>
 
 </body>
-</html>
+                           </html>
