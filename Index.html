@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitUp - Fitness App</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7f6;
+      color: #222;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 32px;
+    }
+
+    header p {
+      margin-top: 6px;
+      color: #bbb;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .welcome {
+      background: white;
+      padding: 22px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .welcome h2 {
+      margin-bottom: 8px;
+    }
+
+    .workouts {
+      display: grid;
+      gap: 15px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background: #111;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    #message {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>FitUp</h1>
+    <p>Your Fitness Journey Starts Here</p>
+  </header>
+
+  <main class="container">
+
+    <section class="welcome">
+      <h2>Welcome to FitUp 💪</h2>
+      <p>Choose a workout and start your fitness journey.</p>
+    </section>
+
+    <section class="workouts">
+
+      <div class="card">
+        <h3>🔥 Full Body</h3>
+        <p>Complete body workout for beginners.</p>
+        <button onclick="startWorkout('Full Body')">Start Workout</button>
+      </div>
+
+      <div class="card">
+        <h3>💪 Chest Workout</h3>
+        <p>Simple exercises for your chest.</p>
+        <button onclick="startWorkout('Chest')">Start Workout</button>
+      </div>
+
+      <div class="card">
+        <h3>🦵 Leg Workout</h3>
+        <p>Build strength with basic leg exercises.</p>
+        <button onclick="startWorkout('Legs')">Start Workout</button>
+      </div>
+
+    </section>
+
+    <div id="message"></div>
+
+  </main>
+
+  <script>
+    function startWorkout(name) {
+      document.getElementById("message").innerText =
+        name + " workout started! 💪";
+    }
+  </script>
+
+</body>
+</html>
