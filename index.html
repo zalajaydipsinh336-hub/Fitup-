@@ -1208,4 +1208,390 @@ function showCurrentExercise(){
 
         item.classList.add("active");
 
-      
+          });
+
+  const button =
+    document.getElementById("exerciseButton");
+
+  button.disabled = false;
+
+  if(exercise.type === "time"){
+
+    timerSeconds = parseInt(exercise.target) || 20;
+
+    document.getElementById("timerLabel").textContent =
+      "Hold for";
+
+    document.getElementById("timerDisplay").textContent =
+      timerSeconds;
+
+    button.textContent = "▶ Start Timer";
+
+    button.onclick = startExerciseTimer;
+
+  }else{
+
+    document.getElementById("timerLabel").textContent =
+      "Target";
+
+    document.getElementById("timerDisplay").textContent =
+      exercise.target;
+
+    button.textContent = "✅ Complete Exercise";
+
+    button.onclick = completeExercise;
+
+  }
+
+}
+
+
+/* ================= TIMER ================= */
+
+function startExerciseTimer(){
+
+  stopTimer();
+
+  const button =
+    document.getElementById("exerciseButton");
+
+  button.disabled = true;
+  button.textContent = "⏱️ Timer Running...";
+
+  timer = setInterval(function(){
+
+    timerSeconds--;
+
+    document.getElementById("timerDisplay").textContent =
+      timerSeconds;
+
+    if(timerSeconds <= 0){
+
+      stopTimer();
+
+      button.disabled = false;
+      button.textContent = "✅ Exercise Complete";
+      button.onclick = completeExercise;
+
+      document.getElementById("timerDisplay").textContent =
+        "Done";
+
+    }
+
+  },1000);
+
+}
+
+
+/* ================= STOP TIMER ================= */
+
+function stopTimer(){
+
+  if(timer !== null){
+
+    clearInterval(timer);
+    timer = null;
+
+  }
+
+}
+
+
+/* ================= COMPLETE EXERCISE ================= */
+
+function completeExercise(){
+
+  stopTimer();
+
+  currentExercise++;
+
+  if(currentExercise >= workoutExercises.length){
+
+    finishWorkout();
+
+    return;
+
+  }
+
+  showCurrentExercise();
+
+}
+
+
+/* ================= FINISH WORKOUT ================= */
+
+function finishWorkout(){
+
+  stopTimer();
+
+  user.workouts++;
+  user.streak++;
+  user.xp += 50;
+
+  user.lastWorkout =
+    new Date().toISOString().split("T")[0];
+
+  updateLevel();
+
+  saveUser();
+
+  document.getElementById("completeXP").textContent =
+    "+50";
+
+  document.getElementById("completeStreak").textContent =
+    user.streak;
+
+  document.getElementById("completeWorkouts").textContent =
+    user.workouts;
+
+  showScreen("completeScreen");
+
+}
+
+
+/* ================= LEVEL ================= */
+
+function updateLevel(){
+
+  if(user.workouts >= 30){
+
+    user.level = "Elite";
+
+  }else if(user.workouts >= 15){
+
+    user.level = "Advanced";
+
+  }else if(user.workouts >= 5){
+
+    user.level = "Intermediate";
+
+  }else{
+
+    user.level = "Beginner";
+
+  }
+
+}
+
+
+/* ================= HOME ================= */
+
+function showHome(){
+
+  stopTimer();
+
+  showScreen("homeScreen");
+
+  updateHome();
+
+}
+
+
+function updateHome(){
+
+  if(!user) return;
+
+  document.getElementById("homeLevel").textContent =
+    user.level;
+
+  document.getElementById("homeGoal").textContent =
+    user.goal;
+
+  document.getElementById("homeWorkouts").textContent =
+    user.workouts;
+
+  document.getElementById("homeStreak").textContent =
+    user.streak;
+
+  document.getElementById("homeXP").textContent =
+    user.xp;
+
+  const data =
+    levelData[user.level] || levelData.Beginner;
+
+  document.getElementById("homePushups").textContent =
+    data.pushups;
+
+  document.getElementById("homeSquats").textContent =
+    data.squats;
+
+  document.getElementById("homeLunges").textContent =
+    data.lunges;
+
+  document.getElementById("homePlank").textContent =
+    data.plank;
+
+  const currentXP = user.xp % 100;
+
+  document.getElementById("xpProgress").style.width =
+    currentXP + "%";
+
+  document.getElementById("xpProgressText").textContent =
+    currentXP + " / 100";
+
+  renderHomeAchievements();
+
+}
+
+
+/* ================= ACHIEVEMENTS ================= */
+
+function renderHomeAchievements(){
+
+  const container =
+    document.getElementById("homeAchievements");
+
+  const unlocked =
+    achievements.filter(function(a){
+
+      return a.condition();
+
+    });
+
+  if(unlocked.length === 0){
+
+    container.innerHTML =
+      '<p class="small">Complete your first workout to unlock an achievement.</p>';
+
+    return;
+
+  }
+
+  container.innerHTML = "";
+
+  unlocked.slice(-3).forEach(function(a){
+
+    const div =
+      document.createElement("div");
+
+    div.className = "achievement";
+
+    div.innerHTML = `
+      <div class="achievement-icon">${a.emoji}</div>
+      <div>
+        <strong>${a.title}</strong>
+        <p class="small">${a.text}</p>
+      </div>
+    `;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+
+function showAchievements(){
+
+  showScreen("achievementsScreen");
+
+  renderAllAchievements();
+
+}
+
+
+function renderAllAchievements(){
+
+  const container =
+    document.getElementById("allAchievements");
+
+  container.innerHTML = "";
+
+  achievements.forEach(function(a){
+
+    const unlocked = a.condition();
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "achievement " + (unlocked ? "" : "locked");
+
+    div.innerHTML = `
+      <div class="achievement-icon">
+        ${unlocked ? a.emoji : "🔒"}
+      </div>
+      <div>
+        <strong>${a.title}</strong>
+        <p class="small">${a.text}</p>
+      </div>
+    `;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+
+/* ================= PROFILE ================= */
+
+function showProfile(){
+
+  showScreen("profileScreen");
+
+  document.getElementById("profileLevel").textContent =
+    user.level;
+
+  document.getElementById("profileFitness").textContent =
+    user.level;
+
+  document.getElementById("profileGoal").textContent =
+    user.goal;
+
+  document.getElementById("profilePushups").textContent =
+    user.pushups;
+
+  document.getElementById("profileWorkouts").textContent =
+    user.workouts;
+
+  document.getElementById("profileXP").textContent =
+    user.xp;
+
+}
+
+
+/* ================= EXIT ================= */
+
+function confirmExitWorkout(){
+
+  if(confirm("Exit this workout?")){
+
+    stopTimer();
+
+    showHome();
+
+  }
+
+}
+
+
+/* ================= RESET ================= */
+
+function resetProfile(){
+
+  if(!confirm("Reset your FitUp profile?")){
+
+    return;
+
+  }
+
+  stopTimer();
+
+  localStorage.removeItem("fitupUser");
+
+  user = null;
+
+  showScreen("welcomeScreen");
+
+}
+
+
+/* ================= START APP ================= */
+
+init();
+
+</script>
+
+</body>
+</html>
